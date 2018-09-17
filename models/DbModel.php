@@ -1,10 +1,10 @@
 <?php
 namespace app\models;
 
-use app\interfaces\IModel;
+use app\interfaces\IDbModel;
 use app\services\Db;
 
-abstract class Model implements IModel
+abstract class DbModel implements IDbModel
 {
     protected $db;
 

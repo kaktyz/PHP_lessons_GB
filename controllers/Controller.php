@@ -1,11 +1,6 @@
 <?php
-
-
 namespace app\controllers;
 
-
-use app\interfaces\IRenderer;
-use app\services\renderers\TemplateRenderer;
 
 abstract class Controller
 {
@@ -14,16 +9,8 @@ abstract class Controller
     private $layout = 'main';
     private $useLayout = true;
 
-    private $renderer;
-
-    public function __construct(IRenderer $renderer)
-    {
-        $this->renderer = $renderer;
-    }
-
-    public function runAction($action = null)
-    {
-        $this->action = $action ?: $this->defaultAction;
+    public function run($action = null){
+        $this->action = $action?:$this->defaultAction;
         $method = "action" . ucfirst($this->action);
         if(method_exists($this, $method)){
             $this->$method();
@@ -35,15 +22,19 @@ abstract class Controller
     public function render($template, $params = [])
     {
         if($this->useLayout){
-            return $this->renderTemplate("layouts/{$this->layout}",
-                ['content' => $this->renderTemplate($template, $params)]);
-        }else{
-            return $this->renderTemplate($template, $params);
+            $content = $this->renderTemplate($template, $params);
+            return $this->renderTemplate("layouts/{$this->layout}", ['content' => $content]);
         }
+        return $this->renderTemplate($template, $params);
     }
+
 
     public function renderTemplate($template, $params = [])
     {
-        return $this->renderer->render($template, $params);
+        ob_start();
+        extract($params);
+        $templatePath = TEMPLATES_DIR . $template . ".php";
+        include $templatePath;
+        return ob_get_clean();
     }
 }
