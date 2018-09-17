@@ -1,20 +1,9 @@
 <?php
-namespace app\models;
-
-class Product extends Model
+class Product
 {
     public $id;
     public $name;
     public $description;
     public $price;
     public $producer;
-    public $img;
-
-    public function getTableName()
-    {
-       return 'products';
-    }
-
-
-
 }
