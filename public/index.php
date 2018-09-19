@@ -1,5 +1,5 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'] . "/../config/main.php";
+include $_SERVER['DOCUMENT_ROOT'] . " /config/main.php";
 include ROOT_DIR . "services/Autoloader.php";
 
 spl_autoload_register([new \app\services\Autoloader(), 'loadClass']);
@@ -15,4 +15,14 @@ if(class_exists($controllerClass)){
     $controller->run($action);
 }
 
+
+
+$product = new \app\models\Product();
+$product->id = 1;
+$product->name = 'qweqweqweqweqwe';
+$product->description = 'asdasdasdasd';
+$product->price = 99999999999;
+$product->img = 'zxczxczxc';
+//$product->producer = 'poipoi';
+$product->update();
 

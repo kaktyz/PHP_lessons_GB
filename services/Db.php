@@ -12,7 +12,7 @@ class Db
         'host' => 'localhost',
         'login' => 'root',
         'password' => '',
-        'database' => 'urok-5',
+        'database' => 'hw5',
         'charset' => 'utf8'
     ];
 

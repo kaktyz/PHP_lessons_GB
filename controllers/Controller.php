@@ -1,7 +1,10 @@
 <?php
 namespace app\controllers;
 
-
+/**
+ * Class Controller решает только задачи маршрутизации
+ * @package app\controllers
+ */
 abstract class Controller
 {
     private $action;

@@ -53,7 +53,7 @@ abstract class DbModel implements IDbModel
         $columns = [];
 
         foreach ($this as $key => $value){
-            /**TODO решшить проблемы со служебнными полями */
+            /**TODO решшить проблемы со служебнными полями что такое протектед? */
             if($key == 'db'){
                 continue;
             }
@@ -64,6 +64,7 @@ abstract class DbModel implements IDbModel
 
         $columns = implode(", ", $columns);
         $placeholders = implode(", ", array_keys($params));
+
         $tableName = static::getTableName();
         $sql = "INSERT INTO {$tableName} ({$columns}) VALUES ({$placeholders})";
         $this->db->execute($sql, $params);
@@ -71,15 +72,32 @@ abstract class DbModel implements IDbModel
     }
 
     /**
-     * TODO сделать по аналогии с INSERT
-     * TODO сохранять ттолько иззменненнные поля
+     * TODO сохранять ттолько иззменненнные поля создавать 2 массива, один был, другой который стал и проверять их
      */
+
+    //"UPDATE {$tableName} SET img=\"{$img}\", name=\"{$name}\", description=\"{$description}\", price=\"{$price}\" WHERE id=\"{$id}\"
     public function update()
     {
+        $params = [];
+        $idOfParam = NULL;
 
+        foreach ($this as $key => $value){
+            /**TODO решшить проблемы со служебнными полями 2 */
+            if($key == 'db'){
+                continue;
+            }else if ($key == 'id'){
+                $idOfParam = $value;
+                continue;
+            }
+            $params[] = "{$key} = \"{$value}\"";
+        }
+        $sqlParams = implode(", ", $params);
+        $tableName = static::getTableName();
+        $sql = "UPDATE {$tableName} SET {$sqlParams} WHERE id = {$idOfParam}";
+        return $this->db->execute($sql, $params);
     }
 
-    /** TODO */
+    /** TODO  функцию сохранения */
     public function save(){
 
     }
