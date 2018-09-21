@@ -7,7 +7,6 @@ class Product extends DbModel
     public $name;
     public $description;
     public $price;
-//    public $producer;
     public $img;
 
     /**
@@ -17,9 +16,8 @@ class Product extends DbModel
      * @param $name
      * @param $description
      * @param $price
-     * @param $producer
      */
-    public function __construct($id = null, $img = null, $name = null, $description = null, $price = null, $producer = null)
+    public function __construct($id = null, $img = null, $name = null, $description = null, $price = null)
     {
         parent::__construct();
         $this->id = $id;
@@ -27,16 +25,11 @@ class Product extends DbModel
         $this->name = $name;
         $this->description = $description;
         $this->price = $price;
-//        $this->producer = $producer;
-    }
 
+    }
 
     public static function getTableName():string
     {
        return 'products';
     }
-
-
-
-
 }

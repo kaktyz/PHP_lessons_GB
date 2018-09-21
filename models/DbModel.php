@@ -20,7 +20,7 @@ abstract class DbModel implements IDbModel
      * @param int $id
      * @return static
      */
-    public static function getOne(int $id)
+    public static function getOne($id)
     {
         $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE id = :id";
@@ -28,7 +28,7 @@ abstract class DbModel implements IDbModel
     }
 
     /**
-     * TODO доделать воззвращение объектов
+     * TODO доделать воззвращение объектов?? Что нужно сделать?
      * @return static[]
      */
     public static function getAll(): array
@@ -53,7 +53,7 @@ abstract class DbModel implements IDbModel
         $columns = [];
 
         foreach ($this as $key => $value){
-            /**TODO решшить проблемы со служебнными полями что такое протектед? */
+            /**TODO решшить проблемы со служебнными полями. Узнать что такое protected? Дабавить решение foreach в update() строка 81 */
             if($key == 'db'){
                 continue;
             }
@@ -71,18 +71,19 @@ abstract class DbModel implements IDbModel
         $this->id = $this->db->lastInsertId();
     }
 
-    /**
-     * TODO сохранять ттолько иззменненнные поля создавать 2 массива, один был, другой который стал и проверять их
-     */
-
     //"UPDATE {$tableName} SET img=\"{$img}\", name=\"{$name}\", description=\"{$description}\", price=\"{$price}\" WHERE id=\"{$id}\"
+
+    /**
+     * Ф-я апдейтит только измененные поля
+     * @return bool
+     */
     public function update()
     {
         $params = [];
         $idOfParam = NULL;
 
         foreach ($this as $key => $value){
-            /**TODO решшить проблемы со служебнными полями 2 */
+
             if($key == 'db'){
                 continue;
             }else if ($key == 'id'){
@@ -97,7 +98,11 @@ abstract class DbModel implements IDbModel
         return $this->db->execute($sql, $params);
     }
 
-    /** TODO  функцию сохранения */
+    // TODO  функцию сохранения, которая сохраняет только измененные поля, т.е. создавать 2 массива, в одном сохранять исходные поля, в другой пришедшие и проверять их на совпадение
+
+    /**
+     * Сам объект орпделет вставить новый инсерт или проапдейтить понимая получили мы его через нью или через один из методов гет
+     */
     public function save(){
 
     }

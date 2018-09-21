@@ -11,14 +11,16 @@ abstract class Controller
     private $defaultAction = 'index';
     private $layout = 'main';
     private $useLayout = true;
-
+    //basket
     public function run($action = null){
         $this->action = $action?:$this->defaultAction;
+
         $method = "action" . ucfirst($this->action);
+
         if(method_exists($this, $method)){
             $this->$method();
         }else{
-            echo "404";
+            echo "404 нет такого метода";
         }
     }
 
@@ -30,7 +32,6 @@ abstract class Controller
         }
         return $this->renderTemplate($template, $params);
     }
-
 
     public function renderTemplate($template, $params = [])
     {
