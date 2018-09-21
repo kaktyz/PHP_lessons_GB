@@ -27,10 +27,6 @@ abstract class DbModel implements IDbModel
         return Db::getInstance()->queryObject($sql, [':id' => $id], get_called_class());
     }
 
-    /**
-     * TODO доделать воззвращение объектов?? Что нужно сделать?
-     * @return static[]
-     */
     public static function getAll(): array
     {
         $tableName = static::getTableName();
@@ -57,7 +53,6 @@ abstract class DbModel implements IDbModel
             if($key == 'db'){
                 continue;
             }
-
             $params[":{$key}"] = $value;
             $columns[] = "`{$key}`";
         }
@@ -70,8 +65,6 @@ abstract class DbModel implements IDbModel
         $this->db->execute($sql, $params);
         $this->id = $this->db->lastInsertId();
     }
-
-    //"UPDATE {$tableName} SET img=\"{$img}\", name=\"{$name}\", description=\"{$description}\", price=\"{$price}\" WHERE id=\"{$id}\"
 
     /**
      * Ф-я апдейтит только измененные поля
@@ -98,12 +91,12 @@ abstract class DbModel implements IDbModel
         return $this->db->execute($sql, $params);
     }
 
-    // TODO  функцию сохранения, которая сохраняет только измененные поля, т.е. создавать 2 массива, в одном сохранять исходные поля, в другой пришедшие и проверять их на совпадение
-
-    /**
-     * Сам объект орпделет вставить новый инсерт или проапдейтить понимая получили мы его через нью или через один из методов гет
-     */
     public function save(){
-
+        foreach ($this as $key => $value){
+            if ($key == 'id' && $value == null){
+                $this->update();
+            }
+            $this->insert();
+        }
     }
 }
