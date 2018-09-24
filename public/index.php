@@ -5,6 +5,8 @@ include VENDOR_DIR . "autoload.php";
 
 //spl_autoload_register([new \app\services\Autoloader(), 'loadClass']);
 
+//TODO: Разобраться с ФАТАЛКОЙ!!
+
 $request = new \app\services\Request();
 
 $controllerName = $request->getControllerName();
