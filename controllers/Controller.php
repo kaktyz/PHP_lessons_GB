@@ -9,7 +9,7 @@ abstract class Controller
     private $action;
     private $defaultAction = 'index';
     private $layout = 'main';
-    private $useLayout = true;
+    public $useLayout = true;
     private $renderer;
 
     /**

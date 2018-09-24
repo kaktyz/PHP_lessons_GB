@@ -8,6 +8,10 @@ class TwigRenderer implements IRenderer
 {
     public function render($template, $params = [])
     {
-        return '';
+        $loader = new \Twig_Loader_Filesystem(TEMPLATES_DIR . "twig");
+        $twig = new \Twig_Environment($loader);
+
+        $template .= ".twig";
+        return $twig->render($template, $params);
     }
 }

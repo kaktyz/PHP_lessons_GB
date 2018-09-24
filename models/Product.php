@@ -24,18 +24,6 @@ class Product extends DbModel
         }
     }
 
-
-
-
-
-
-    /*  public $id;
-      public $name;
-      public $description;
-      public $price;
-      public $producer;
-      public $img;*/
-
     /**
      * Product constructor.
      * @param $id
