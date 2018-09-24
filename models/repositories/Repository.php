@@ -1,58 +1,47 @@
 <?php
-namespace app\models;
+namespace app\models\repositories;
 
-use app\interfaces\IDbModel;
+use app\models\entityes\DataEntity;
 use app\services\Db;
 
-abstract class DbModel implements IDbModel
+    abstract class Repository
 {
     protected $db;
 
-    /**
-     * @param $db
-     */
-    public function  __construct()
+    function __construct()
     {
-        $this->db = static::getDb();
+        $this->db = Db::getInstance();
     }
 
-    /**
-     * @param int $id
-     * @return static
-     */
-    public static function getOne(int $id)
+    public function getOne(int $id)
     {
         $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE id = :id";
-        return static::getDb()->queryObject($sql, [':id' => $id], get_called_class());
+        return $this->db->queryObject($sql, [':id' => $id], $this->getEntityClass());
     }
 
-    private static function getDb(){
-        return Db::getInstance();
-    }
-
-    public static function getAll(): array
+    public function getAll(): array
     {
         $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName}";
-        return static::getDb()->queryAll($sql);
+        return $this->db->queryAll($sql);
     }
 
-    public function delete()
+    // TODO: вставить delete and insert
+
+    public function delete(DataEntity $entity)
     {
         $tableName = static::getTableName();
         $sql = "DELETE FROM {$tableName} WHERE id = :id";
-        return $this->db->execute($sql, [":id" => $this->id]);
+        return $this->db->execute($sql, [":id" => $entity->id]);
     }
 
-
-    //INSERT INTO products(id, name,description...) VALUES (:id, :name......)
-    public function insert()
+    public function insert(DataEntity $entity)
     {
         $params = [];
         $columns = [];
 
-        foreach ($this as $key => $value){
+        foreach ($entity as $key => $value){
             if($key == 'db'){
                 continue;
             }
@@ -66,6 +55,10 @@ abstract class DbModel implements IDbModel
         $tableName = static::getTableName();
         $sql = "INSERT INTO {$tableName} ({$columns}) VALUES ({$placeholders})";
         $this->db->execute($sql, $params);
-        $this->id = $this->db->lastInsertId();
+        $entity->id = $this->db->lastInsertId();
     }
+
+    abstract public function getTableName(): string ;
+
+    abstract public function getEntityClass(): string ;
 }

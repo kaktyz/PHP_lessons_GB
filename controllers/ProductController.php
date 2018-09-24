@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use app\models\Product;
+use app\models\repositories\ProductRepository;
 
 class ProductController extends Controller
 {
@@ -14,7 +15,7 @@ class ProductController extends Controller
     {
        $this->useLayout = false;//поменять на привалт 12 строку controller.php
        $id = $_GET['id'];
-       $product = Product::getOne($id);
+       $product = (new ProductRepository())->getOne($id);
        echo $this->render('card', ['product' => $product]);
     }
 }

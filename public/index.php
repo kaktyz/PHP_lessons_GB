@@ -16,3 +16,7 @@ if(class_exists($controllerClass)){
 //    $controller = new $controllerClass(new \app\services\TwigRenderer());
     $controller->run($action);
 }
+
+$a = new \app\models\repositories\ProductRepository();
+
+$a->getEntityClass();

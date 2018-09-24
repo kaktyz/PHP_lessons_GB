@@ -1,12 +1,12 @@
 <?php
-namespace app\models;
+namespace app\models\entityes;
 
 /**
  * Class Product
  * @package app\models
  * @property $price
  */
-class Product extends DbModel
+class Product extends DataEntity
 {
     protected $properties = [
         'id' => '',
@@ -34,21 +34,10 @@ class Product extends DbModel
      */
     public function __construct($id = null, $name = null, $description = null, $price = null, $producer = null)
     {
-        parent::__construct();
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
         $this->price = $price;
         $this->producer = $producer;
     }
-
-
-    public static function getTableName():string
-    {
-       return 'products';
-    }
-
-
-
-
 }
