@@ -59,6 +59,9 @@ class Db
         return $this->getConnection()->lastInsertId();
     }
 
+
+    //SELECT * FROM products WHERE id = :id    // [':id' => 5]
+
     private function query($sql, $params = []){
         $pdoStatement = $this->getConnection()->prepare($sql);
         $pdoStatement->execute($params);

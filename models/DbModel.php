@@ -13,25 +13,29 @@ abstract class DbModel implements IDbModel
      */
     public function  __construct()
     {
-        $this->db = Db::getInstance();
+        $this->db = static::getDb();
     }
 
     /**
      * @param int $id
      * @return static
      */
-    public static function getOne($id)
+    public static function getOne(int $id)
     {
         $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE id = :id";
-        return Db::getInstance()->queryObject($sql, [':id' => $id], get_called_class());
+        return static::getDb()->queryObject($sql, [':id' => $id], get_called_class());
+    }
+
+    private static function getDb(){
+        return Db::getInstance();
     }
 
     public static function getAll(): array
     {
         $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName}";
-        return Db::getInstance()->queryAll($sql);
+        return static::getDb()->queryAll($sql);
     }
 
     public function delete()
@@ -49,54 +53,19 @@ abstract class DbModel implements IDbModel
         $columns = [];
 
         foreach ($this as $key => $value){
-            /**TODO решшить проблемы со служебнными полями. Узнать что такое protected? Дабавить решение foreach в update() строка 81 */
             if($key == 'db'){
                 continue;
             }
+
             $params[":{$key}"] = $value;
             $columns[] = "`{$key}`";
         }
 
         $columns = implode(", ", $columns);
         $placeholders = implode(", ", array_keys($params));
-
         $tableName = static::getTableName();
         $sql = "INSERT INTO {$tableName} ({$columns}) VALUES ({$placeholders})";
         $this->db->execute($sql, $params);
         $this->id = $this->db->lastInsertId();
-    }
-
-    /**
-     * Ф-я апдейтит только измененные поля
-     * @return bool
-     */
-    public function update()
-    {
-        $params = [];
-        $idOfParam = NULL;
-
-        foreach ($this as $key => $value){
-
-            if($key == 'db'){
-                continue;
-            }else if ($key == 'id'){
-                $idOfParam = $value;
-                continue;
-            }
-            $params[] = "{$key} = \"{$value}\"";
-        }
-        $sqlParams = implode(", ", $params);
-        $tableName = static::getTableName();
-        $sql = "UPDATE {$tableName} SET {$sqlParams} WHERE id = {$idOfParam}";
-        return $this->db->execute($sql, $params);
-    }
-
-    public function save(){
-        foreach ($this as $key => $value){
-            if ($key == 'id' && $value == null){
-                $this->update();
-            }
-            $this->insert();
-        }
     }
 }

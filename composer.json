@@ -1,0 +1,6 @@
+{
+    "name": "accadmin/src",
+    "require": {
+        "twig/twig": "^2.0"
+    }
+}
