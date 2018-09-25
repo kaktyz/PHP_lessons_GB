@@ -19,21 +19,27 @@ class Request
         if(preg_match_all($pattern, $this->requestString, $match)){
             $this->controllerName = $match['controller'][0];
             $this->actionName = $match['action'][0];
-            $this->params = $_REQUEST;
+            $this->params =  $match['patternParams'][0];
+//          TODO: Додумать регулярное выражение!
+//            $this->params = explode("&", $match['patternParams'][0]);
+//            echo "<hr>";
+//            var_dump($this->params);
+//            echo "<hr>";
+//            foreach ($this->params as $value){
+//                $reg = "|[\w+][\W]([\w+])|";
+//                preg_match_all($reg, $value, $matchForeach);
+//                var_dump($matchForeach);
+//            }
+            $this->params = preg_replace("/[^0-9]/", '', $this->params);
+
         }
     }
 
     public function getControllerName(){
-//        echo "controllerName";
-//        var_dump($this->controllerName);
-//        echo '<hr>';
         return $this->controllerName;
     }
 
     public function getActionName(){
-//        echo "actionName";
-//        var_dump($this->actionName);
-//        echo '<hr>';
         return $this->actionName;
     }
 

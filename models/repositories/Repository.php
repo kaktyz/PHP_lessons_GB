@@ -15,6 +15,7 @@ use app\services\Db;
 
     public function getOne(int $id)
     {
+
         $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE id = :id";
         return $this->db->queryObject($sql, [':id' => $id], $this->getEntityClass());
