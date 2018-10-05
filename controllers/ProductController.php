@@ -14,11 +14,9 @@ class ProductController extends Controller
     public function actionCard()
     {
        $this->useLayout = false;//поменять на привалт 12 строку controller.php
-
-//       $id = $_GET['id'];
-//        TODO: Вызвать метод getParams() из объекта Request
-        $id = (new Request)->getParams();
+       $id = (new Request)->getParams();
        $product = (new ProductRepository())->getOne($id);
-       echo $this->render('card', ['product' => $product]);
+
+       echo $this->render($this->action, ['product' => $product]);
     }
 }

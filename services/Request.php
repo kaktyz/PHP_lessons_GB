@@ -1,10 +1,12 @@
 <?php
 namespace app\services;
 
+//use app\controllers\ProductController;
+
 class Request
 {
     private $actionName;
-    private $controllerName;
+    private $controllerName = 'index';
     private $params;
     private $requestString;
 
@@ -14,6 +16,10 @@ class Request
         $this->parseRequest();
     }
 
+    /**
+     * Рзабмвает URI на акшены, контроллеоы и параметры товара, возвращает данные в params, actionName и controllerName
+     * соответственно.
+     */
     public function parseRequest(){
         $pattern = "|[/](?P<public>\w+)[/](?P<controller>[\w]+)[/]?(?P<action>\w+)?[/]?[?]?(?P<patternParams>.*)|";
         if(preg_match_all($pattern, $this->requestString, $match)){
@@ -31,18 +37,29 @@ class Request
 //                var_dump($matchForeach);
 //            }
             $this->params = preg_replace("/[^0-9]/", '', $this->params);
-
+        }else{
+            $this->actionName = 'cart';
         }
+
     }
 
+    /**
+     * @return string возвращает данные из controllerName
+     */
     public function getControllerName(){
         return $this->controllerName;
     }
 
+    /**
+     * @return mixed возвращает actionName
+     */
     public function getActionName(){
         return $this->actionName;
     }
 
+    /**
+     * @return mixed возвращает params
+     */
     public function getParams(){
         return $this->params;
     }

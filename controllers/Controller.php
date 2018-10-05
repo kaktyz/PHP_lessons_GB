@@ -6,7 +6,7 @@ use app\interfaces\IRenderer;
 
 abstract class Controller
 {
-    private $action;
+    public $action;
     private $defaultAction = 'index';
     private $layout = 'main';
     public $useLayout = true;
@@ -21,7 +21,6 @@ abstract class Controller
         $this->renderer = $renderer;
     }
 
-
     public function run($action = null)
     {
         $this->action = $action ?: $this->defaultAction;
@@ -35,6 +34,8 @@ abstract class Controller
 
     protected function render($template, $params = [])
     {
+//        var_dump($template);//card
+//        var_dump($params);//данные о продуктах
         if ($this->useLayout) {
             $content = $this->renderTemplate($template, $params);
             return $this->renderTemplate("layouts/{$this->layout}", ['content' => $content]);
@@ -44,6 +45,7 @@ abstract class Controller
 
     protected function renderTemplate($template, $params = [])
     {
+//        var_dump($this->renderer);//object(app\services\TemplateRenderer)
         return $this->renderer->render($template, $params);
     }
 }
