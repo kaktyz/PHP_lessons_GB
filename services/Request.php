@@ -6,7 +6,7 @@ namespace app\services;
 class Request
 {
     private $actionName;
-    private $controllerName = 'index';
+    private $controllerName = 'product';
     private $params;
     private $requestString;
 
@@ -40,7 +40,6 @@ class Request
         }else{
             $this->actionName = 'cart';
         }
-
     }
 
     /**

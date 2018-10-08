@@ -8,7 +8,7 @@ class ProductController extends Controller
 {
     public function actionIndex()
     {
-        echo "catalog";
+        $this->render(null, null);
     }
 
     public function actionCard()

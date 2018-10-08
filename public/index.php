@@ -13,5 +13,4 @@ $controllerClass = CONTROLLERS_NAMESPACE . "\\" . ucfirst($controllerName) ."Con
 if(class_exists($controllerClass)){
     $controller = new $controllerClass(new \app\services\TemplateRenderer());
     $controller->run($action);
-    var_dump($action);
 }

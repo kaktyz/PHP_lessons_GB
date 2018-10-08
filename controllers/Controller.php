@@ -9,7 +9,7 @@ abstract class Controller
     public $action;
     private $defaultAction = 'index';
     private $layout = 'main';
-    public $useLayout = true;
+    public $useLayout = false;
     private $renderer;
 
     /**
@@ -21,21 +21,19 @@ abstract class Controller
         $this->renderer = $renderer;
     }
 
-    public function run($action = null)
-    {
+    public function run($action = null){
         $this->action = $action ?: $this->defaultAction;
         $method = "action" . ucfirst($this->action);
         if (method_exists($this, $method)) {
             $this->$method();
-        } else {
-            echo "404";
+        }else{
+            $method = "action" . ucfirst($this->defaultAction);
+            $this->$method();
         }
     }
 
     protected function render($template, $params = [])
     {
-//        var_dump($template);//card
-//        var_dump($params);//данные о продуктах
         if ($this->useLayout) {
             $content = $this->renderTemplate($template, $params);
             return $this->renderTemplate("layouts/{$this->layout}", ['content' => $content]);
@@ -45,7 +43,7 @@ abstract class Controller
 
     protected function renderTemplate($template, $params = [])
     {
-//        var_dump($this->renderer);//object(app\services\TemplateRenderer)
+//        var_dump($this->renderer);
         return $this->renderer->render($template, $params);
     }
 }
